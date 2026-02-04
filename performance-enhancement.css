@@ -1,0 +1,94 @@
+/* ==================== 性能优化增强 ==================== */
+
+/* 1. 为动画元素添加性能提示 */
+.difficulty-card,
+.card-emoji,
+.lantern,
+.message {
+    will-change: transform;
+}
+
+/* 2. 优化背景动画，使用transform代替opacity */
+body::before {
+    will-change: transform, opacity;
+    transform: translateZ(0); /* 开启GPU加速 */
+}
+
+/* 3. 为不支持backdrop-filter的浏览器提供fallback */
+@supports not (backdrop-filter: blur(20px)) {
+    .difficulty-card,
+    .chat-header,
+    .chat-input-area,
+    .header,
+    .modal-content {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
+
+/* 4. 移动端性能优化 */
+@media (max-width: 768px) {
+    /* 禁用部分动画以提升性能 */
+    .difficulty-card:hover .card-emoji {
+        transform: none;
+    }
+
+    .difficulty-card:hover .difficulty-stars span {
+        animation: none;
+    }
+
+    /* 简化背景效果 */
+    body::before {
+        display: none;
+    }
+}
+
+/* 5. 添加prefers-reduced-motion支持 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 6. 优化渐变文字可访问性 */
+.title {
+    /* Fallback for browsers that don't support background-clip: text */
+    color: var(--color-primary);
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .title {
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+}
+
+/* 7. 添加常用渐变变量以减少重复 */
+:root {
+    /* ... 现有变量 ... */
+
+    /* 渐变变量 */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    --gradient-gold: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary-light) 50%, var(--color-accent) 100%);
+    --gradient-msg-relative: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+    --gradient-msg-user: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+}
+
+/* 8. 添加焦点状态以提升键盘导航体验 */
+.card-btn:focus,
+.send-btn:focus,
+.back-btn:focus {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* 9. 优化hover效果，只使用transform */
+.difficulty-card:hover {
+    transform: translateY(-8px);
+    /* 移除 scale(1.02) 以提升性能 */
+}

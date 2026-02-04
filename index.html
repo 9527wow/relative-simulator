@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧨 亲戚应对模拟器 - 春节生存挑战</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 烟花容器 -->
+    <div class="fireworks-container" id="fireworks-container"></div>
+
+    <!-- 春节装饰背景 -->
+    <div class="spring-decoration">🧧</div>
+    <div class="spring-decoration">✨</div>
+    <div class="spring-decoration">🎊</div>
+    <div class="spring-decoration">🎉</div>
+
+    <!-- 春节装饰灯笼 -->
+    <div class="lantern lantern-left">🏮</div>
+    <div class="lantern lantern-right">🏮</div>
+
+    <!-- 设置按钮 -->
+    <button id="settings-btn" class="settings-btn" title="设置">⚙️</button>
+
+    <!-- 设置面板 -->
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>⚙️ 设置</h3>
+                <button id="close-settings" class="close-settings">×</button>
+            </div>
+
+            <div class="settings-section">
+                <h4>🎨 主题模式</h4>
+                <div class="settings-option">
+                    <label class="toggle-label">
+                        <input type="radio" name="theme" value="light" checked>
+                        <span class="toggle-text">☀️ 浅色模式</span>
+                    </label>
+                </div>
+                <div class="settings-option">
+                    <label class="toggle-label">
+                        <input type="radio" name="theme" value="dark">
+                        <span class="toggle-text">🌙 深色模式</span>
+                    </label>
+                </div>
+                <div class="settings-option">
+                    <label class="toggle-label">
+                        <input type="radio" name="theme" value="auto">
+                        <span class="toggle-text">🔄 跟随系统</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>✨ 增强选项</h4>
+                <div class="settings-option">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="fireworks-toggle" checked>
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-text">🎆 烟花效果</span>
+                    </label>
+                </div>
+                <div class="settings-option">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="animation-toggle" checked>
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-text">启用动画效果</span>
+                    </label>
+                </div>
+                <div class="settings-option">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="particles-toggle" checked>
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-text">背景粒子效果</span>
+                    </label>
+                </div>
+                <div class="settings-option">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="sound-toggle">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-text">音效反馈</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>💬 对话设置</h4>
+                <div class="settings-option">
+                    <label for="round-limit">最大对话轮数：</label>
+                    <select id="round-limit" class="settings-select">
+                        <option value="5">5 轮</option>
+                        <option value="10" selected>10 轮</option>
+                        <option value="15">15 轮</option>
+                        <option value="20">20 轮</option>
+                        <option value="999">无限</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 标题区域 -->
+        <header class="header">
+            <h1 class="title">🧨 亲戚应对模拟器</h1>
+            <p class="subtitle">春节生存挑战 - 你能撑过几轮？</p>
+        </header>
+
+        <!-- 难度选择界面 -->
+        <div id="difficulty-screen" class="screen active">
+            <h2 class="section-title">选择你的挑战难度</h2>
+            <div class="difficulty-grid">
+                <div class="difficulty-card" data-difficulty="easy">
+                    <div class="card-emoji">👩</div>
+                    <h3 class="card-title">和蔼的大姨</h3>
+                    <div class="difficulty-stars">⭐</div>
+                    <p class="card-desc">性格温和，问题简单</p>
+                    <button class="card-btn">开始挑战</button>
+                </div>
+
+                <div class="difficulty-card" data-difficulty="medium">
+                    <div class="card-emoji">👩‍🦳</div>
+                    <h3 class="card-title">犀利的大姑</h3>
+                    <div class="difficulty-stars">⭐⭐⭐</div>
+                    <p class="card-desc">言辞犀利，擅长对比</p>
+                    <button class="card-btn">开始挑战</button>
+                </div>
+
+                <div class="difficulty-card" data-difficulty="hard">
+                    <div class="card-emoji">👨</div>
+                    <h3 class="card-title">王牌二舅</h3>
+                    <div class="difficulty-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="card-desc">经验丰富，问题刁钻</p>
+                    <button class="card-btn">开始挑战</button>
+                </div>
+
+                <div class="difficulty-card" data-difficulty="extreme">
+                    <div class="card-emoji">👵</div>
+                    <h3 class="card-title">终极三婶</h3>
+                    <div class="difficulty-stars">⭐⭐⭐⭐⭐⭐</div>
+                    <p class="card-desc">究极难度，全方位轰炸</p>
+                    <button class="card-btn">开始挑战</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天界面 -->
+        <div id="chat-screen" class="screen">
+            <div class="chat-header">
+                <div class="relative-info">
+                    <span id="current-emoji" class="relative-emoji">👩</span>
+                    <div>
+                        <h3 id="current-relative" class="relative-name">和蔼的大姨</h3>
+                        <p id="current-difficulty" class="relative-difficulty">难度：⭐ 简单</p>
+                    </div>
+                </div>
+                <button id="back-btn" class="back-btn">← 返回</button>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <!-- 消息会动态添加到这里 -->
+            </div>
+
+            <div class="chat-input-area">
+                <input
+                    type="text"
+                    id="user-input"
+                    class="chat-input"
+                    placeholder="输入你的应对..."
+                    autocomplete="off"
+                >
+                <button id="send-btn" class="send-btn">发送</button>
+            </div>
+        </div>
+
+        <!-- 结果弹窗 -->
+        <div id="result-modal" class="modal">
+            <div class="modal-content">
+                <h2 id="result-title">挑战结束</h2>
+                <p id="result-message">恭喜你完成了挑战！</p>
+                <div id="result-stats" class="result-stats">
+                    <p>对话轮数：<span id="round-count">0</span></p>
+                </div>
+                <div class="modal-buttons">
+                    <button id="retry-btn" class="modal-btn primary">再来一次</button>
+                    <button id="close-modal-btn" class="modal-btn secondary">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <p>亲戚正在思考怎么刁难你...</p>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="settings.js"></script>
+    <script src="fireworks.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
