@@ -189,6 +189,101 @@
                 </div>
             </div>
         </div>
+
+        <!-- 评分模态框 -->
+        <div id="rating-modal" class="modal">
+            <div class="modal-content">
+                <h2>🎯 本次表现评分</h2>
+                <p class="rating-description">
+                    为您这次应对亲戚的表现打分，帮助我们了解您对游戏的体验
+                </p>
+                
+                <div class="rating-stars-container">
+                    <div class="rating-stars" id="rating-stars">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                    <div class="rating-text" id="rating-text">请选择评分</div>
+                </div>
+
+                <div class="rating-feedback">
+                    <h3>📝 评价反馈</h3>
+                    <div class="rating-comments">
+                        <div class="rating-comment" data-rating="1">
+                            <h4>⭐ 一星 - 刚起步</h4>
+                            <p>继续努力！多练习几次就能更好地应对亲戚的刁难了。建议提前想好应对策略哦～</p>
+                        </div>
+                        <div class="rating-comment" data-rating="2">
+                            <h4>⭐⭐ 两星 - 有进步</h4>
+                            <p>表现不错！你已经能应对一些基本的亲戚问题了。再接再厉，下次会更好！</p>
+                        </div>
+                        <div class="rating-comment" data-rating="3">
+                            <h4>⭐⭐⭐ 三星 - 还不错</h4>
+                            <p>中等水平！大部分情况都能应对，但在一些 tricky 问题上还可以更机智一些。</p>
+                        </div>
+                        <div class="rating-comment" data-rating="4">
+                            <h4>⭐⭐⭐⭐ 四星 - 很棒</h4>
+                            <p>表现优秀！你很懂得如何巧妙应对亲戚的问题，很多应对策略都很得体。</p>
+                        </div>
+                        <div class="rating-comment" data-rating="5">
+                            <h4>⭐⭐⭐⭐⭐ 五星 - 太厉害了</h4>
+                            <p>完美表现！你是真正的亲戚应对大师，任何刁难都能轻松化解，太强了！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rating-actions">
+                    <button id="submit-rating-btn" class="modal-btn primary" disabled>提交评分</button>
+                    <button id="skip-rating-btn" class="modal-btn secondary">跳过</button>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+
+        <!-- API Key 首次访问提示弹窗 -->
+        <div id="api-key-modal" class="modal">
+            <div class="modal-content">
+                <h2>🔑 设置 iFlow API Key</h2>
+                <p class="api-key-description">
+                    为了使用亲戚应对模拟器，您需要提供 iFlow 服务的 API Key。<br>
+                    这是连接 AI 大模型服务的必要凭证。
+                </p>
+                
+                <div class="api-key-instructions">
+                    <h3>📋 获取 API Key 步骤：</h3>
+                    <ol>
+                        <li>访问 <a href="https://iflow.cn" target="_blank" class="api-key-link">iFlow 官网</a></li>
+                        <li>注册或登录您的账户</li>
+                        <li>进入控制台 API Key 页面</li>
+                        <li>创建新的 API Key</li>
+                        <li>复制 API Key 并输入到下方</li>
+                    </ol>
+                </div>
+
+                <div class="api-key-input-area">
+                    <label for="api-key-input">请输入您的 API Key：</label>
+                    <input
+                        type="password"
+                        id="api-key-input"
+                        class="api-key-input"
+                        placeholder="sk-..."
+                        autocomplete="off"
+                    >
+                    <div class="api-key-hint">
+                        <span>💡 提示：Key 以 "sk-" 开头</span>
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button id="save-api-key-btn" class="modal-btn primary">保存并开始</button>
+                    <button id="skip-api-key-btn" class="modal-btn secondary">跳过（离线模式）</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 加载动画 -->

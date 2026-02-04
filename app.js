@@ -7,9 +7,24 @@ let isWaiting = false;
 let settingsManager = null;
 
 // iflow API 配置
-const API_KEY = 'sk-8a65170a5a3d18e70268b6f9c31a3872';
 const API_URL = 'https://apis.iflow.cn/v1/chat/completions';
 const MODEL = 'tstars2.0';
+
+// 获取API key
+function getApiKey() {
+    let apiKey = localStorage.getItem('iflow_api_key');
+    if (!apiKey) {
+        // 如果localStorage中没有API key，显示输入提示
+        apiKey = prompt('请输入您的 iFlow API Key：\n\n获取方式：\n1. 访问 https://iflow.cn\n2. 注册/登录账户\n3. 在控制台获取 API Key\n\n请输入您的 API Key：');
+        if (apiKey && apiKey.trim()) {
+            localStorage.setItem('iflow_api_key', apiKey.trim());
+            return apiKey.trim();
+        } else {
+            throw new Error('API Key 未提供，无法使用 iFlow 服务');
+        }
+    }
+    return apiKey;
+}
 
 // ==================== DOM 元素 ====================
 const difficultyScreen = document.getElementById('difficulty-screen');
@@ -25,6 +40,15 @@ const loading = document.getElementById('loading');
 const resultModal = document.getElementById('result-modal');
 const retryBtn = document.getElementById('retry-btn');
 const closeModalBtn = document.getElementById('close-modal-btn');
+const apiKeyModal = document.getElementById('api-key-modal');
+const apiKeyInput = document.getElementById('api-key-input');
+const saveApiKeyBtn = document.getElementById('save-api-key-btn');
+const skipApiKeyBtn = document.getElementById('skip-api-key-btn');
+const ratingModal = document.getElementById('rating-modal');
+const ratingStars = document.getElementById('rating-stars');
+const ratingText = document.getElementById('rating-text');
+const submitRatingBtn = document.getElementById('submit-rating-btn');
+const skipRatingBtn = document.getElementById('skip-rating-btn');
 
 // ==================== 初始化 ====================
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,7 +58,86 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeDifficultySelection();
     initializeChatEvents();
     initializeModalEvents();
+    initializeApiKeyModal();
+    initializeRatingModal();
+    
+    // 检查是否首次访问，如果是则显示API key模态框
+    checkFirstVisit();
 });
+
+// ==================== 首次访问检查 ====================
+function checkFirstVisit() {
+    const hasVisited = localStorage.getItem('has_visited_app');
+    const hasApiKey = localStorage.getItem('iflow_api_key');
+    
+    // 如果从未访问过，显示API key模态框
+    if (!hasVisited) {
+        setTimeout(() => {
+            apiKeyModal.classList.add('active');
+        }, 500);
+    }
+}
+
+// ==================== API Key 模态框 ====================
+function initializeApiKeyModal() {
+    saveApiKeyBtn.addEventListener('click', () => {
+        const apiKey = apiKeyInput.value.trim();
+        
+        if (!apiKey) {
+            apiKeyInput.classList.add('error');
+            apiKeyInput.focus();
+            return;
+        }
+        
+        // 验证API key格式
+        if (!apiKey.startsWith('sk-') || apiKey.length < 20) {
+            apiKeyInput.classList.add('error');
+            apiKeyInput.focus();
+            return;
+        }
+        
+        // 保存API key
+        localStorage.setItem('iflow_api_key', apiKey);
+        localStorage.setItem('has_visited_app', 'true');
+        apiKeyModal.classList.remove('active');
+        apiKeyInput.classList.remove('error');
+    });
+    
+    skipApiKeyBtn.addEventListener('click', () => {
+        localStorage.setItem('has_visited_app', 'true');
+        apiKeyModal.classList.remove('active');
+    });
+    
+    // 输入框回车键保存
+    apiKeyInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            saveApiKeyBtn.click();
+        }
+    });
+    
+    // 点击模态框外部关闭
+    apiKeyModal.addEventListener('click', (e) => {
+        if (e.target === apiKeyModal) {
+            skipApiKeyBtn.click();
+        }
+    });
+}
+
+// 获取API key
+function getApiKey() {
+    let apiKey = localStorage.getItem('iflow_api_key');
+    if (!apiKey) {
+        // 如果localStorage中没有API key，显示输入提示
+        apiKey = prompt('请输入您的 iFlow API Key：\n\n获取方式：\n1. 访问 https://iflow.cn\n2. 注册/登录账户\n3. 在控制台获取 API Key\n\n请输入您的 API Key：');
+        if (apiKey && apiKey.trim()) {
+            localStorage.setItem('iflow_api_key', apiKey.trim());
+            return apiKey.trim();
+        } else {
+            throw new Error('API Key 未提供，无法使用 iFlow 服务');
+        }
+    }
+    return apiKey;
+}
 
 // ==================== 难度选择 ====================
 function initializeDifficultySelection() {
@@ -307,11 +410,12 @@ async function callIFlowAPI(userMessage) {
 
 async function callAPI(messages) {
     try {
+        const apiKey = getApiKey();
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${API_KEY}`
+                'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
                 model: MODEL,
@@ -340,6 +444,117 @@ async function callAPI(messages) {
     }
 }
 
+// ==================== 评分机制 ====================
+function initializeRatingModal() {
+    let selectedRating = 0;
+    
+    // 星星点击事件
+    const stars = ratingStars.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            selectedRating = index + 1;
+            updateRatingStars(selectedRating);
+            updateRatingText(selectedRating);
+            updateRatingComment(selectedRating);
+            submitRatingBtn.disabled = false;
+        });
+        
+        star.addEventListener('mouseenter', () => {
+            updateRatingStars(index + 1);
+            updateRatingText(index + 1);
+        });
+    });
+    
+    // 鼠标离开星星区域时恢复选中状态
+    ratingStars.addEventListener('mouseleave', () => {
+        updateRatingStars(selectedRating);
+        updateRatingText(selectedRating);
+    });
+    
+    // 提交评分
+    submitRatingBtn.addEventListener('click', () => {
+        if (selectedRating > 0) {
+            saveRating(selectedRating, currentDifficulty);
+            ratingModal.classList.remove('active');
+            showFinalResultModal();
+        }
+    });
+    
+    // 跳过评分
+    skipRatingBtn.addEventListener('click', () => {
+        ratingModal.classList.remove('active');
+        showFinalResultModal();
+    });
+    
+    // 点击模态框外部关闭
+    ratingModal.addEventListener('click', (e) => {
+        if (e.target === ratingModal) {
+            skipRatingBtn.click();
+        }
+    });
+}
+
+function updateRatingStars(rating) {
+    const stars = ratingStars.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+}
+
+function updateRatingText(rating) {
+    const texts = {
+        0: '请选择评分',
+        1: '1星 - 刚起步',
+        2: '2星 - 有进步',
+        3: '3星 - 还不错',
+        4: '4星 - 很棒',
+        5: '5星 - 太厉害了'
+    };
+    ratingText.textContent = texts[rating];
+}
+
+function updateRatingComment(rating) {
+    const comments = ratingModal.querySelectorAll('.rating-comment');
+    comments.forEach((comment, index) => {
+        if (index === rating - 1) {
+            comment.classList.add('active');
+        } else {
+            comment.classList.remove('active');
+        }
+    });
+}
+
+function saveRating(rating, difficulty) {
+    const ratingData = {
+        rating: rating,
+        difficulty: difficulty,
+        date: new Date().toISOString(),
+        roundCount: roundCount
+    };
+    
+    // 保存到localStorage
+    let ratings = JSON.parse(localStorage.getItem('session_ratings') || '[]');
+    ratings.push(ratingData);
+    localStorage.setItem('session_ratings', JSON.stringify(ratings));
+    
+    // 更新统计数据
+    updateRatingStats();
+}
+
+function updateRatingStats() {
+    let ratings = JSON.parse(localStorage.getItem('session_ratings') || '[]');
+    
+    // 计算平均评分
+    if (ratings.length > 0) {
+        const avgRating = ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length;
+        console.log(`平均评分: ${avgRating.toFixed(1)}星 (${ratings.length} 次评分)`);
+    }
+}
+
 // ==================== 对话控制 ====================
 function shouldEndConversation() {
     // 使用设置中的轮数限制
@@ -348,6 +563,11 @@ function shouldEndConversation() {
 }
 
 function showResultModal() {
+    // 先显示评分模态框
+    ratingModal.classList.add('active');
+}
+
+function showFinalResultModal() {
     const roundCountSpan = document.getElementById('round-count');
     roundCountSpan.textContent = roundCount;
 

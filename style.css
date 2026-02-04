@@ -1608,3 +1608,303 @@ body::before {
 .difficulty-card:hover {
     transform: translateY(-8px);
 }
+
+/* ==================== API Key 模态框样式 ==================== */
+
+.api-key-description {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.api-key-instructions {
+    background: linear-gradient(135deg, var(--color-surface-light) 0%, var(--color-surface) 100%);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.api-key-instructions h3 {
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.api-key-instructions ol {
+    text-align: left;
+    padding-left: 20px;
+    color: var(--color-text);
+    line-height: 1.8;
+}
+
+.api-key-instructions li {
+    margin-bottom: 8px;
+}
+
+.api-key-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.api-key-link:hover {
+    color: var(--color-primary-light);
+    text-decoration: underline;
+}
+
+.api-key-input-area {
+    margin-bottom: 32px;
+}
+
+.api-key-input-area label {
+    display: block;
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.api-key-input {
+    width: 100%;
+    padding: 16px 24px;
+    border: 2px solid #E0E0E0;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--color-white);
+    color: var(--color-text);
+    font-family: 'Courier New', monospace;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.api-key-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.api-key-input:hover {
+    border-color: #C0C0C0;
+}
+
+.api-key-input.error {
+    border-color: #DC3545;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.api-key-hint {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 深色模式下的API key模态框 */
+body.dark-mode .api-key-modal .modal-content {
+    background: rgba(30, 30, 30, 0.98);
+    color: #f0f0f0;
+}
+
+body.dark-mode .api-key-description {
+    color: #ccc;
+}
+
+body.dark-mode .api-key-instructions {
+    background: rgba(60, 60, 60, 0.5);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+body.dark-mode .api-key-instructions h3 {
+    color: var(--color-accent);
+}
+
+body.dark-mode .api-key-instructions ol {
+    color: #e0e0e0;
+}
+
+body.dark-mode .api-key-link {
+    color: var(--color-accent);
+}
+
+body.dark-mode .api-key-input-area label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .api-key-input {
+    background: rgba(60, 60, 60, 0.8);
+    border-color: rgba(212, 175, 55, 0.3);
+    color: #f0f0f0;
+}
+
+body.dark-mode .api-key-input::placeholder {
+    color: #888;
+}
+
+body.dark-mode .api-key-input:focus {
+    border-color: var(--color-accent);
+    background: rgba(60, 60, 60, 1);
+}
+
+body.dark-mode .api-key-hint {
+    color: #aaa;
+}
+
+/* ==================== 评分模态框样式 ==================== */
+
+.rating-description {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.rating-stars-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.rating-stars {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.star {
+    font-size: 3rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    filter: grayscale(1);
+}
+
+.star:hover,
+.star.active {
+    color: #FFD700;
+    filter: grayscale(0);
+    transform: scale(1.1);
+}
+
+.star:hover {
+    animation: starPulse 0.5s ease-in-out;
+}
+
+@keyframes starPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1.1); }
+}
+
+.rating-text {
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    min-height: 24px;
+}
+
+.rating-feedback {
+    background: linear-gradient(135deg, var(--color-surface-light) 0%, var(--color-surface) 100%);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.rating-feedback h3 {
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.rating-comments {
+    position: relative;
+    min-height: 80px;
+}
+
+.rating-comment {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.rating-comment.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rating-comment h4 {
+    font-size: 1rem;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.rating-comment p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+.rating-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.rating-actions .modal-btn {
+    min-width: 140px;
+}
+
+/* 深色模式下的评分模态框 */
+body.dark-mode #rating-modal .modal-content {
+    background: rgba(30, 30, 30, 0.98);
+    color: #f0f0f0;
+}
+
+body.dark-mode .rating-description {
+    color: #ccc;
+}
+
+body.dark-mode .rating-feedback {
+    background: rgba(60, 60, 60, 0.5);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+body.dark-mode .rating-feedback h3 {
+    color: var(--color-accent);
+}
+
+body.dark-mode .rating-comment h4 {
+    color: var(--color-accent);
+}
+
+body.dark-mode .rating-comment p {
+    color: #ccc;
+}
+
+body.dark-mode .star {
+    color: #555;
+}
+
+body.dark-mode .star:hover,
+body.dark-mode .star.active {
+    color: #FFD700;
+}
